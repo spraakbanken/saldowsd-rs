@@ -50,15 +50,13 @@ jobs:
         with:
           # (required) Comma-separated list of binary names (non-extension portion of filename) to build and upload.
           # Note that glob pattern is not supported yet.
-          # TODO: enter bin[s]
-          bin: ...
+          bin: saldowsd
           archive: $bin-$tag-$target
           # (optional) Target triple, default is host triple.
           target: ${{ matrix.target }}
           # (optional) Comma-separated list of additional files to be uploaded separately.
           # Note that glob pattern is not supported yet.
-          # TODO: optionally add assets
-          # asset: LICENSE,README.md
+          asset: LICENSE,README.md
           tar: all
           zip: windows
           checksum: sha256,sha512
