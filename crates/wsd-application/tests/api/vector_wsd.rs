@@ -3,7 +3,7 @@ use std::{env, fs, io};
 use rstest::{fixture, rstest};
 
 use wsd_application::{
-    SharedWSDApplication, TabFormat, make_wsd_application,
+    SharedWSDApplication, TabFormat, VectorWSD, VectorWSDConfig,
     wsd_application::{DisambiguateOptions, disambiguate_sentences},
 };
 
@@ -20,16 +20,17 @@ fn context_model() -> &'static str {
 fn vector_wsd(sense_model: &str, context_model: &str) -> SharedWSDApplication {
     println!("sense_model='{}'", sense_model);
     println!("context_model='{}'", context_model);
-    let argv = &[
-        // "-format=tab".to_string(),
-        format!("-svFile={}", sense_model),
-        format!("-cvFile={}", context_model),
-        "-s1Prior=1".into(),
-        "-decay=true".into(),
-        "-contextWidth=10".into(),
-        "-verbose=false".into(),
-    ];
-    make_wsd_application(None, "se.gu.spraakbanken.wsd.VectorWSD", argv).expect("VectorWSD created")
+
+    VectorWSD::new_as_shared(
+        sense_model,
+        context_model,
+        VectorWSDConfig {
+            decay: true,
+            s1prior: 1.0,
+            context_width: 10,
+        },
+    )
+    .expect("VectorWSD created")
 }
 
 #[rstest]
