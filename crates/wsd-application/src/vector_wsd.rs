@@ -1,8 +1,9 @@
 use hashbrown::HashMap;
+use miette::{Context, IntoDiagnostic};
 use ndarray::Array1;
 use w2v::word2vec2;
 
-use crate::{UsageError, WSDApplication};
+use crate::WSDApplication;
 
 pub struct VectorWSD {
     decay: bool,
@@ -12,49 +13,31 @@ pub struct VectorWSD {
     form_to_ctx_vec: HashMap<String, Array1<f32>>,
 }
 
+#[derive(Debug, Clone, Default)]
+pub struct VectorWSDConfig {
+    pub decay: bool,
+    pub s1prior: f32,
+    pub context_width: usize,
+}
 impl VectorWSD {
     pub fn new_as_shared(
-        argv: &[String],
-    ) -> Result<crate::SharedWSDApplication, crate::UsageError> {
-        let mut decay = bool::default();
-        let mut s1prior = f32::default();
-        let mut context_width = usize::default();
-        let mut id_to_vectors = None;
-        let mut form_to_ctx_vec = None;
-
-        for a in argv {
-            if let Some(val) = a.strip_prefix("-decay=") {
-                decay = val.parse().map_err(|_err| UsageError::BadValue {
-                    param: "-decay=".into(),
-                    value: val.to_string(),
-                })?;
-            } else if let Some(val) = a.strip_prefix("-s1Prior=") {
-                s1prior = val.parse().map_err(|_err| UsageError::BadValue {
-                    param: "-s1Prior=".into(),
-                    value: val.to_string(),
-                })?;
-            } else if let Some(val) = a.strip_prefix("-contextWidth=") {
-                context_width = val.parse().map_err(|_err| UsageError::BadValue {
-                    param: "-contextWidth=".into(),
-                    value: val.to_string(),
-                })?;
-            } else if let Some(val) = a.strip_prefix("-svFile=") {
-                id_to_vectors =
-                    Some(read_sense_vectors(val).map_err(|err| err.with_param("-svFile="))?);
-            } else if let Some(val) = a.strip_prefix("-cvFile=") {
-                form_to_ctx_vec =
-                    Some(read_ctx_vectors(val).map_err(|err| err.with_param("-cvFile="))?);
-            }
-        }
+        sv_file: &str,
+        cv_file: &str,
+        VectorWSDConfig {
+            decay,
+            s1prior,
+            context_width,
+        }: VectorWSDConfig,
+    ) -> miette::Result<crate::SharedWSDApplication> {
+        let id_to_vectors = read_sense_vectors(sv_file)?;
+        let form_to_ctx_vec = read_ctx_vectors(cv_file)?;
         Ok(Box::new(Self {
             // saldo,
             decay,
             s1prior,
             context_width,
-            id_to_vectors: id_to_vectors
-                .ok_or_else(|| UsageError::missing_required_argument("-svFile="))?,
-            form_to_ctx_vec: form_to_ctx_vec
-                .ok_or_else(|| UsageError::missing_required_argument("-cvFile="))?,
+            id_to_vectors,
+            form_to_ctx_vec,
         }))
     }
 
@@ -173,23 +156,20 @@ fn normalize_to_probs(out: &mut [f32], svs: &[Option<&Array1<f32>>]) {
     }
 }
 
-fn read_sense_vectors(path: &str) -> Result<HashMap<String, Array1<f32>>, UsageError> {
+fn read_sense_vectors(path: &str) -> miette::Result<HashMap<String, Array1<f32>>> {
     log::info!("Reading sense vectors...");
     read_embeddings_from_path(path)
 }
 
-fn read_ctx_vectors(path: &str) -> Result<HashMap<String, Array1<f32>>, UsageError> {
+fn read_ctx_vectors(path: &str) -> miette::Result<HashMap<String, Array1<f32>>> {
     log::info!("Reading context vectors...");
     read_embeddings_from_path(path)
 }
 
-fn read_embeddings_from_path(path: &str) -> Result<HashMap<String, Array1<f32>>, UsageError> {
-    let embeddings =
-        word2vec2::read_w2v_file(path, false).map_err(|source| UsageError::Word2VecError {
-            param: String::new(),
-            path: path.to_string(),
-            source,
-        })?;
+fn read_embeddings_from_path(path: &str) -> miette::Result<HashMap<String, Array1<f32>>> {
+    let embeddings = word2vec2::read_w2v_file(path, false)
+        .into_diagnostic()
+        .wrap_err_with(|| format!("Failed to read w2v file from '{}'", path))?;
 
     Ok(embeddings)
 }

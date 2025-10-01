@@ -1,32 +1,50 @@
 use std::io;
 
+use clap::Parser;
 use log::LevelFilter;
 use miette::IntoDiagnostic;
 use options::Args;
-use saldo::SaldoLexicon;
 use wsd_application::{
-    SourceFormat, TabFormat, make_wsd_application,
+    SourceFormat, TabFormat, VectorWSD, VectorWSDConfig,
     wsd_application::{DisambiguateOptions, disambiguate_sentences, evaluate},
 };
+
+use crate::options::{AppNames, Format};
 
 mod options;
 
 fn main() -> miette::Result<()> {
-    let argv: Vec<String> = std::env::args().collect();
-    let args = Args::parse(&argv).inspect_err(|_err| {
-        usage();
-    })?;
+    let args = Args::parse();
+
+    dbg!(&args);
 
     configure_logging(args.verbose);
 
-    let saldo = match &args.saldo {
-        None => None,
-        Some(saldo_file) => Some(SaldoLexicon::new(saldo_file)?),
+    // let saldo = match &args.saldo {
+    //     None => None,
+    //     Some(saldo_file) => Some(SaldoLexicon::new(saldo_file)?),
+    // };
+
+    let wsd = match args.app_name {
+        AppNames::VectorWSD {
+            decay,
+            s1_prior,
+            context_width,
+            sv_file,
+            cv_file,
+        } => VectorWSD::new_as_shared(
+            &sv_file,
+            &cv_file,
+            VectorWSDConfig {
+                decay,
+                s1prior: s1_prior,
+                context_width,
+            },
+        )?,
     };
+    // let wsd = make_wsd_application(saldo.as_ref(), &args.app_name, &argv)?;
 
-    let wsd = make_wsd_application(saldo.as_ref(), &args.app_name, &argv)?;
-
-    if args.eval {
+    if args.format == Format::Eval {
         evaluate(wsd, &args.eval_lemmas.unwrap(), &args.eval_key.unwrap());
         return Ok(());
     }
@@ -39,7 +57,7 @@ fn main() -> miette::Result<()> {
 
     let mut stdin = io::stdin().lock();
     let mut stdout = io::stdout().lock();
-    let format: Box<dyn SourceFormat> = if args.sbxml {
+    let format: Box<dyn SourceFormat> = if args.format == Format::Sbxml {
         todo!("sbxml format is not yet supported");
     } else {
         Box::new(TabFormat::default())
@@ -62,11 +80,6 @@ fn main() -> miette::Result<()> {
 
     // TODO split into chunks and use thread pool
     Ok(())
-}
-
-fn usage() {
-    eprintln!("Usage: saldowsd -appName=APP_NAME [-saldo=SALDO]");
-    eprintln!();
 }
 
 fn configure_logging(level: u8) {
