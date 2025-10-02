@@ -1,6 +1,6 @@
-# wsd-rs
+# saldowsd-rs
 
-A rewrite of [sparv-wsd](https://github.com/spraakbanken/sparv-wsd) in Rust.
+A rewrite of the Java app `saldowsd.jar` in [sparv-wsd](https://github.com/spraakbanken/sparv-wsd) in Rust.
 
 ## Usage
 
