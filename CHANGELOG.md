@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [unreleased]
+
+### Changed
+
+- Simplify loading by @kod-kristoff
+- Rename word2vec2 to word2vec by @kod-kristoff
+
 ## [0.2.1] - 2025-10-02
 
 ### Documentation
