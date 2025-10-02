@@ -1,7 +1,7 @@
 use hashbrown::HashMap;
 use miette::{Context, IntoDiagnostic};
 use ndarray::Array1;
-use w2v::word2vec2;
+use w2v::word2vec;
 
 use crate::WSDApplication;
 
@@ -165,7 +165,7 @@ fn normalize_to_probs(out: &mut [f32], svs: &[Option<&Array1<f32>>]) {
 }
 
 fn read_embeddings_from_path(path: &str) -> miette::Result<HashMap<String, Array1<f32>>> {
-    let embeddings = word2vec2::read_w2v_file(path, false)
+    let embeddings = word2vec::read_w2v_file(path, false)
         .into_diagnostic()
         .wrap_err_with(|| format!("Failed to read w2v file from '{}'", path))?;
 

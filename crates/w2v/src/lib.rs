@@ -1,1 +1,2 @@
-pub mod word2vec2;
+
+pub mod word2vec;
