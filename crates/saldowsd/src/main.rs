@@ -6,7 +6,7 @@ use miette::IntoDiagnostic;
 use options::Args;
 use wsd_application::{
     SourceFormat, TabFormat, VectorWSD, VectorWSDConfig,
-    wsd_application::{DisambiguateOptions, disambiguate_sentences, evaluate},
+    wsd_application::{DisambiguateOptions, disambiguate_sentences},
 };
 
 use crate::options::{AppNames, Format};
@@ -16,8 +16,6 @@ mod options;
 fn main() -> miette::Result<()> {
     let args = Args::parse();
 
-    dbg!(&args);
-
     configure_logging(args.verbose);
 
     // let saldo = match &args.saldo {
@@ -25,6 +23,7 @@ fn main() -> miette::Result<()> {
     //     Some(saldo_file) => Some(SaldoLexicon::new(saldo_file)?),
     // };
 
+    // FIXME: use new_as_shared if more apps are included
     let wsd = match args.app_name {
         AppNames::VectorWSD {
             decay,
@@ -32,7 +31,7 @@ fn main() -> miette::Result<()> {
             context_width,
             sv_file,
             cv_file,
-        } => VectorWSD::new_as_shared(
+        } => VectorWSD::new(
             &sv_file,
             &cv_file,
             VectorWSDConfig {
@@ -44,16 +43,18 @@ fn main() -> miette::Result<()> {
     };
     // let wsd = make_wsd_application(saldo.as_ref(), &args.app_name, &argv)?;
 
-    if args.format == Format::Eval {
-        evaluate(wsd, &args.eval_lemmas.unwrap(), &args.eval_key.unwrap());
-        return Ok(());
-    }
+    // FIXME: eval not supported yet
+    // if args.format == Format::Eval {
+    //     evaluate(wsd, &args.eval_lemmas.unwrap(), &args.eval_key.unwrap());
+    //     return Ok(());
+    // }
 
+    // FIXME: ratios not supported yet
     // let mut ratios = None;
-    if args.for_lemma.is_some() {
-        todo!("ratios is not yet supported");
-        // todo!("ratios = Some(HashMap::new())");
-    }
+    // if args.for_lemma.is_some() {
+    //     todo!("ratios is not yet supported");
+    //     // todo!("ratios = Some(HashMap::new())");
+    // }
 
     let mut stdin = io::stdin().lock();
     let mut stdout = io::stdout().lock();
@@ -74,9 +75,10 @@ fn main() -> miette::Result<()> {
     )
     .into_diagnostic()?;
 
-    if args.for_lemma.is_some() {
-        todo!("printRatios(ratios)");
-    }
+    // FIXME: ratios not supported yet
+    // if args.for_lemma.is_some() {
+    //     todo!("printRatios(ratios)");
+    // }
 
     // TODO split into chunks and use thread pool
     Ok(())

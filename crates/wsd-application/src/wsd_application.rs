@@ -31,8 +31,14 @@ pub trait WSDApplication {
 
 pub type SharedWSDApplication = Box<dyn WSDApplication>;
 
-pub fn evaluate(_wsd: SharedWSDApplication, _eval_lemmas_file: &str, _eval_key_file: &str) {
+pub fn evaluate(_wsd: impl WSDApplication, _eval_lemmas_file: &str, _eval_key_file: &str) {
     todo!("evaluate is not yet supported")
+}
+
+impl WSDApplication for SharedWSDApplication {
+    fn disambiguate(&self, lts: &[LemmaToken], i: usize) -> Option<Vec<f32>> {
+        self.as_ref().disambiguate(lts, i)
+    }
 }
 
 pub fn read_sentences(
@@ -73,7 +79,7 @@ impl Default for DisambiguateOptions {
     }
 }
 pub fn disambiguate_sentences(
-    wsd: SharedWSDApplication,
+    wsd: impl WSDApplication,
     reader: &mut dyn io::BufRead,
     out: &mut dyn io::Write,
     f: &dyn SourceFormat,
