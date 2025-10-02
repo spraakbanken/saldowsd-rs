@@ -20,7 +20,7 @@ pub struct VectorWSDConfig {
     pub context_width: usize,
 }
 impl VectorWSD {
-    pub fn new_as_shared(
+    pub fn new(
         sv_file: &str,
         cv_file: &str,
         VectorWSDConfig {
@@ -28,17 +28,25 @@ impl VectorWSD {
             s1prior,
             context_width,
         }: VectorWSDConfig,
-    ) -> miette::Result<crate::SharedWSDApplication> {
-        let id_to_vectors = read_sense_vectors(sv_file)?;
-        let form_to_ctx_vec = read_ctx_vectors(cv_file)?;
-        Ok(Box::new(Self {
-            // saldo,
+    ) -> miette::Result<Self> {
+        let id_to_vectors =
+            read_embeddings_from_path(sv_file).wrap_err("Failed to read sense vectors")?;
+        let form_to_ctx_vec =
+            read_embeddings_from_path(cv_file).wrap_err("Failed to read context vectors")?;
+        Ok(Self {
             decay,
             s1prior,
             context_width,
             id_to_vectors,
             form_to_ctx_vec,
-        }))
+        })
+    }
+    pub fn new_as_shared(
+        sv_file: &str,
+        cv_file: &str,
+        config: VectorWSDConfig,
+    ) -> miette::Result<crate::SharedWSDApplication> {
+        Ok(Box::new(Self::new(sv_file, cv_file, config)?))
     }
 
     fn add_s1prior(&self, ps: &[String], out: &mut [f32], svs: &[Option<&Array1<f32>>]) {
@@ -154,16 +162,6 @@ fn normalize_to_probs(out: &mut [f32], svs: &[Option<&Array1<f32>>]) {
             out[i] = (out[i] - log_exp_sum).exp();
         }
     }
-}
-
-fn read_sense_vectors(path: &str) -> miette::Result<HashMap<String, Array1<f32>>> {
-    log::info!("Reading sense vectors...");
-    read_embeddings_from_path(path)
-}
-
-fn read_ctx_vectors(path: &str) -> miette::Result<HashMap<String, Array1<f32>>> {
-    log::info!("Reading context vectors...");
-    read_embeddings_from_path(path)
 }
 
 fn read_embeddings_from_path(path: &str) -> miette::Result<HashMap<String, Array1<f32>>> {

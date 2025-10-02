@@ -16,8 +16,6 @@ mod options;
 fn main() -> miette::Result<()> {
     let args = Args::parse();
 
-    dbg!(&args);
-
     configure_logging(args.verbose);
 
     // let saldo = match &args.saldo {
@@ -25,6 +23,7 @@ fn main() -> miette::Result<()> {
     //     Some(saldo_file) => Some(SaldoLexicon::new(saldo_file)?),
     // };
 
+    // FIXME: use new_as_shared if more apps are included
     let wsd = match args.app_name {
         AppNames::VectorWSD {
             decay,
@@ -32,7 +31,7 @@ fn main() -> miette::Result<()> {
             context_width,
             sv_file,
             cv_file,
-        } => VectorWSD::new_as_shared(
+        } => VectorWSD::new(
             &sv_file,
             &cv_file,
             VectorWSDConfig {
