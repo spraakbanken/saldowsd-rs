@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [unreleased]
+
+### Documentation
+
+- Change repo name to spraakbanken/saldowsd-rs
+
+### Miscellaneous Tasks
+
+- Ignore data dir
+- Add hook to update Cargo.lock after bumping version
+
 ## [0.2.0] - 2025-10-02
 
 ### Added
