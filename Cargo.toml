@@ -23,6 +23,7 @@ w2v = { path = "crates/w2v" }
 wsd-application = { path = "crates/wsd-application" }
 
 # external crates
+byteorder = "1.5.0"
 eyre = "0.6.12"
 flate2 = "1.0.35"
 hashbrown = "0.16.0"

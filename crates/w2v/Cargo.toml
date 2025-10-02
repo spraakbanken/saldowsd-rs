@@ -6,5 +6,8 @@ rust-version.workspace = true
 license.workspace = true
 
 [dependencies]
+byteorder.workspace = true
 hashbrown.workspace = true
+miette.workspace = true
 ndarray.workspace = true
+thiserror.workspace = true
