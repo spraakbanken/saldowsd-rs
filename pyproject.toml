@@ -7,7 +7,7 @@ name = "saldowsd"
 version = "0.2.2"
 description = "Tool for word sense disambiguation (WSD) based on SALDO, ported to Rust."
 authors = [{ name = "Språkbanken Text", email = "sb-info@svenska.gu.se" }]
-requires-python = ">=3.10"
+requires-python = ">=3.8"
 keywords = [
   "word sense disambiguation", "saldo"
 ]
@@ -19,6 +19,8 @@ classifiers = [
   "License :: OSI Approved :: MIT License",
   "License :: OSI Approved :: Apache Software License",
   "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
