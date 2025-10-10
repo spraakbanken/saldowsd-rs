@@ -35,3 +35,8 @@ ndarray = "0.16.1"
 quick-xml = "0.37.0"
 rstest = "0.26.1"
 thiserror = "2.0.4"
+
+# The profile that 'dist' will build with
+[profile.dist]
+inherits = "release"
+lto = "thin"

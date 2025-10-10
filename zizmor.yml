@@ -1,0 +1,7 @@
+rules:
+  secrets-inherit:
+    ignore:
+      - release.yml
+  template-injection:
+    ignore:
+      - release.yml
