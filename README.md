@@ -1,5 +1,20 @@
 # saldowsd-rs
 
+[![PyPI version](https://img.shields.io/pypi/v/saldowsd.svg)](https://pypi.org/project/saldowsd/)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/saldowsd.svg)](https://pypi.org/project/saldowsd)
+
+<!--[![PyPI - Downloads](https://img.shields.io/pypi/dm/saldowsd)](https://pypi.org/project/saldowsd/)-->
+
+[![Maturity badge - level 3](https://img.shields.io/badge/Maturity-Level%203%20--%20Stable-green.svg)](https://github.com/spraakbanken/getting-started/blob/main/scorecard.md)
+[![Stage](https://img.shields.io/pypi/status/json-arrays)](https://pypi.org/project/json-arrays/)
+
+[![Code Coverage](https://codecov.io/gh/spraakbanken/json-arrays-rs/branch/main/graph/badge.svg)](https://codecov.io/gh/spraakbanken/json-arrays-rs/)
+
+[![CI(check)](https://github.com/spraakbanken/json-arrays-rs/actions/workflows/check.yml/badge.svg)](https://github.com/spraakbanken/json-arrays-rs/actions/workflows/check.yml)
+[![CI(release)](https://github.com/spraakbanken/json-arrays-rs/actions/workflows/release.yml/badge.svg)](https://github.com/spraakbanken/json-arrays-rs/actions/workflows/release.yml)
+[![CI(scheduled)](https://github.com/spraakbanken/json-arrays-rs/actions/workflows/scheduled.yml/badge.svg)](https://github.com/spraakbanken/json-arrays-rs/actions/workflows/scheduled.yml)
+[![CI(test)](https://github.com/spraakbanken/json-arrays-rs/actions/workflows/test.yml/badge.svg)](https://github.com/spraakbanken/json-arrays-rs/actions/workflows/test.yml)
+
 A rewrite of the Java app `saldowsd.jar` in [sparv-wsd](https://github.com/spraakbanken/sparv-wsd) in Rust.
 
 ## Usage
