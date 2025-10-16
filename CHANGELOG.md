@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [unreleased]
+
+### Added
+
+- Add python package by @kod-kristoff
+
+### Documentation
+
+- Add badges by @kod-kristoff
+
+### Miscellaneous Tasks
+
+- Use dist for release management by @kod-kristoff
+
+### Removed
+
+- Remove release workflow by @kod-kristoff
+
+### New Contributors
+
+- @dependabot[bot] made their first contribution
+
 ## [0.2.2] - 2025-10-02
 
 ### Changed
