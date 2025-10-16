@@ -4,7 +4,7 @@ build-backend = "maturin"
 
 [project]
 name = "saldowsd"
-version = "0.2.2"
+version = "0.2.3"
 description = "Tool for word sense disambiguation (WSD) based on SALDO, ported to Rust."
 authors = [{ name = "Språkbanken Text", email = "sb-info@svenska.gu.se" }]
 requires-python = ">=3.8"
