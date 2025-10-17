@@ -9,12 +9,18 @@ use wsd_application::{
 
 #[fixture]
 fn sense_model() -> &'static str {
-    "assets/sparv-wsd/models/scouse/ALL_512_128_w10_A2_140403_ctx1.bin"
+    match env::var("CI") {
+        Ok(_) => "assets/models/ALL_512_128_w10_A2_140403_ctx1.bin",
+        _ => "assets/sparv-wsd/models/scouse/ALL_512_128_w10_A2_140403_ctx1.bin",
+    }
 }
 
 #[fixture]
 fn context_model() -> &'static str {
-    "assets/sparv-wsd/models/scouse/lem_cbow0_s512_w10_NEW2_ctx.bin"
+    match env::var("CI") {
+        Ok(_) => "assets/models/lem_cbow0_s512_w10_NEW2_ctx.bin",
+        _ => "assets/sparv-wsd/models/scouse/lem_cbow0_s512_w10_NEW2_ctx.bin",
+    }
 }
 #[fixture]
 fn vector_wsd(sense_model: &str, context_model: &str) -> SharedWSDApplication {
