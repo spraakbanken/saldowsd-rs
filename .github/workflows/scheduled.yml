@@ -23,7 +23,6 @@ jobs:
         with:
           submodules: true
           persist-credentials: false
-          lfs: true
       - name: Install nightly
         uses: dtolnay/rust-toolchain@6d653acede28d24f02e3cd41383119e8b1b35921 # master
         with:
@@ -31,7 +30,24 @@ jobs:
       - name: cargo generate-lockfile
         if: hashFiles('Cargo.lock') == ''
         run: cargo generate-lockfile
+      - name: Cache of models
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        id: cache-models
+        with:
+          path: assets/models
+          key: ${{ runner.os }}-models
 
+      - name: Download models
+        if: steps.cache-models.outputs.cache-hit != 'true'
+        run: |
+          SENSE_MODEL=ALL_512_128_w10_A2_140403_ctx1.bin
+          CONTEXT_MODEL=lem_cbow0_s512_w10_NEW2_ctx.bin
+
+          curl -sL --output assets/models/$SENSE_MODEL https://github.com/spraakbanken/sparv-wsd/raw/refs/heads/master/models/scouse/$SENSE_MODEL
+          curl -sL --output assets/models/$CONTEXT_MODEL https://github.com/spraakbanken/sparv-wsd/raw/refs/heads/master/models/scouse/$CONTEXT_MODEL
+      - name: ls files
+        run: |
+          ls -l assets/models/*
       - name: cargo test --locked
         run: cargo test --locked --all-features --all-targets
   # https://twitter.com/alcuadrado/status/1571291687837732873
@@ -51,7 +67,6 @@ jobs:
         with:
           submodules: true
           persist-credentials: false
-          lfs: true
       - name: Install beta
         if: hashFiles('Cargo.lock') != ''
         uses: dtolnay/rust-toolchain@6d653acede28d24f02e3cd41383119e8b1b35921 # master
@@ -61,6 +76,26 @@ jobs:
         if: hashFiles('Cargo.lock') != ''
         run: cargo update
 
+      - name: Cache of models
+        if: hashFiles('Cargo.lock') != ''
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        id: cache-models
+        with:
+          path: assets/models
+          key: ${{ runner.os }}-models
+
+      - name: Download models
+        if: hashFiles('Cargo.lock') != '' && steps.cache-models.outputs.cache-hit != 'true'
+        run: |
+          SENSE_MODEL=ALL_512_128_w10_A2_140403_ctx1.bin
+          CONTEXT_MODEL=lem_cbow0_s512_w10_NEW2_ctx.bin
+
+          curl -sL --output assets/models/$SENSE_MODEL https://github.com/spraakbanken/sparv-wsd/raw/refs/heads/master/models/scouse/$SENSE_MODEL
+          curl -sL --output assets/models/$CONTEXT_MODEL https://github.com/spraakbanken/sparv-wsd/raw/refs/heads/master/models/scouse/$CONTEXT_MODEL
+      - name: ls files
+        if: hashFiles('Cargo.lock') != ''
+        run: |
+          ls -l assets/models/*
       - name: cargo test
         if: hashFiles('Cargo.lock') != ''
         run: cargo test --locked --all-features --all-targets
