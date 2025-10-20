@@ -1,6 +1,8 @@
 [workspace]
-resolver = "2"
+resolver = "3"
 members = [
+    "crates/asp-server",
+    "crates/asp-types",
     "crates/process-corpus",
     "crates/saldo",
     "crates/saldowsd",
@@ -18,6 +20,8 @@ repository = "https://github.com/spraakbanken/saldowsd-rs"
 
 [workspace.dependencies]
 # local crates
+asp-server = { path = "crates/asp-server" }
+asp-types = { path = "crates/asp-types" }
 saldo = { path = "crates/saldo" }
 process-corpus = { path = "crates/process-corpus" }
 w2v = { path = "crates/w2v" }
