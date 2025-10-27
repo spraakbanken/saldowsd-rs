@@ -67,24 +67,28 @@ Options:
 
 ## Development
 
-You must have Rust and git-lfs installed.
+You must have Rust installed.
 
 ### Clone the repository
 
-Clone this repo with recursing submodules.
+Clone this repo.
 
 ```shell
-git clone --recurse-submodules https://github.com/spraakbanken/wsd-rs.git
+git clone https://github.com/spraakbanken/saldowsd-rs.git
 ```
 
 or, if you are using ssh:
 
 ```shell
-git clone --recurse-submodules git@github.com:spraakbanken/wsd-rs.git
+git clone git@github.com:spraakbanken/saldowsd-rs.git
 ```
 
 or, if using GitHub cli:
 
 ```shell
-gh repo clone spraakbanken/wsd-rs -- --recurse-submodules
+gh repo clone spraakbanken/saldowsd-rs
 ```
+
+### Download the models
+
+Download the models with `make download-models`
