@@ -11,5 +11,5 @@ default = ["proposed"]
 proposed = []
 
 [dependencies]
-serde = { version = "1.0.228", features = ["derive"] }
-serde_json = "1.0.145"
+serde = { workspace = true , features = ["derive"] }
+serde_json = { workspace = true }

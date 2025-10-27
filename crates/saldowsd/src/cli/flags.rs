@@ -44,14 +44,18 @@ pub struct AppArgs {
 }
 #[derive(Debug, clap::Subcommand)]
 pub enum SaldoWsdCmd {
-    Batch {
-        #[command(flatten)]
-        args: AppArgs,
-    },
-    AspServer {
-        #[command(flatten)]
-        args: AppArgs,
-    },
+    Batch(Batch),
+    AspServer(AspServer),
+}
+#[derive(Debug, clap::Args)]
+pub struct Batch {
+    #[command(flatten)]
+    pub args: AppArgs,
+}
+#[derive(Debug, clap::Args)]
+pub struct AspServer {
+    #[command(flatten)]
+    pub args: AppArgs,
 }
 #[derive(Debug, clap::Subcommand)]
 pub enum AppNames {

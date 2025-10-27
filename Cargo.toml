@@ -5,7 +5,7 @@ members = [
     "crates/asp-types",
     "crates/process-corpus",
     "crates/saldo",
-    "crates/saldowsd",
+    "crates/saldowsd", "crates/stdx",
     "crates/w2v",
     "crates/wsd-application",
 ]
@@ -22,22 +22,29 @@ repository = "https://github.com/spraakbanken/saldowsd-rs"
 # local crates
 asp-server = { path = "crates/asp-server" }
 asp-types = { path = "crates/asp-types" }
-saldo = { path = "crates/saldo" }
 process-corpus = { path = "crates/process-corpus" }
+saldo = { path = "crates/saldo" }
+stdx = { path = "crates/stdx" }
 w2v = { path = "crates/w2v" }
 wsd-application = { path = "crates/wsd-application" }
 
 # external crates
 byteorder = "1.5.0"
+crossbeam-channel = "0.5.15"
+crossbeam-utils = "0.8.21"
+env_logger = "0.11.8"
 eyre = "0.6.12"
 flate2 = "1.0.35"
 hashbrown = "0.16.0"
 insta = "1.41.1"
-log = "0.4.22"
+jod-thread = "1.0.0"
+log = "0.4.28"
 miette = "7.4.0"
 ndarray = "0.16.1"
 quick-xml = "0.37.0"
 rstest = "0.26.1"
+serde = "1.0.228"
+serde_json = "1.0.145"
 thiserror = "2.0.4"
 
 # The profile that 'dist' will build with

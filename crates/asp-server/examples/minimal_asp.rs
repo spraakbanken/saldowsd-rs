@@ -79,7 +79,7 @@ use std::process::Stdio;
 // use anyhow::{Context, Result, anyhow, bail};
 use asp_server::Connection;
 use asp_server::Message;
-use asp_types::core::{InitializeParams, ServerCapabilities};
+use asp_types::{InitializeParams, ServerCapabilities};
 // use asp_server::{Connection, Message, Request as ServerRequest, RequestId, Response};
 // use asp_types::notification::Notification as _; // for METHOD consts
 // use asp_types::request::Request as _;

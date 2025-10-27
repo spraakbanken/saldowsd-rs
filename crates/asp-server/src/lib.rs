@@ -1,6 +1,6 @@
 mod error;
 mod msg;
-// mod req_queue;
+mod req_queue;
 // mod socket;
 mod stdio;
 
@@ -9,7 +9,7 @@ use crossbeam_channel::{Receiver, RecvError, RecvTimeoutError, Sender};
 pub use crate::{
     error::{ExtractError, ProtocolError},
     msg::{ErrorCode, Message, Notification, Request, RequestId, Response, ResponseError},
-    // req_queue::{Incoming, Outgoing, ReqQueue},
+    req_queue::{Incoming, Outgoing, ReqQueue},
     stdio::IoThreads,
 };
 
