@@ -2,6 +2,15 @@
 #[command(version, author = "Språkbanken Text at Göteborg university",about, long_about=None)]
 #[command(propagate_version = true)]
 pub struct Args {
+    /// command to perform
+    #[command(subcommand)]
+    pub cmd: SaldoWsdCmd,
+    /// Verbosity
+    #[arg(short, long, action = clap::ArgAction::Count)]
+    pub verbose: u8,
+}
+#[derive(Debug, clap::Args)]
+pub struct AppArgs {
     // /// load saldo from this file
     // #[arg(long)]
     // pub saldo: Option<String>,
@@ -32,11 +41,22 @@ pub struct Args {
     /// The maximum sense
     #[arg(long, default_value_t = u32::MAX as usize)]
     pub max_sen: usize,
-    /// Verbosity
-    #[arg(short, long, action = clap::ArgAction::Count)]
-    pub verbose: u8,
 }
-
+#[derive(Debug, clap::Subcommand)]
+pub enum SaldoWsdCmd {
+    Batch(Batch),
+    AspServer(AspServer),
+}
+#[derive(Debug, clap::Args)]
+pub struct Batch {
+    #[command(flatten)]
+    pub args: AppArgs,
+}
+#[derive(Debug, clap::Args)]
+pub struct AspServer {
+    #[command(flatten)]
+    pub args: AppArgs,
+}
 #[derive(Debug, clap::Subcommand)]
 pub enum AppNames {
     VectorWSD {

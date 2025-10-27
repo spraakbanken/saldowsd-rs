@@ -11,9 +11,16 @@ repository = { workspace = true }
 saldo = { workspace = true }
 wsd-application = { workspace = true }
 #
-env_logger = "0.11.5"
+env_logger = { workspace = true }
 hashbrown.workspace = true
 log.workspace = true
-miette = { workspace = true, features = ["fancy"] }
 thiserror.workspace = true
 clap = { version = "4.5.48", features = ["cargo", "derive"] }
+stdx.workspace = true
+asp-server.workspace = true
+asp-types.workspace = true
+serde = { workspace = true }
+serde_json = { workspace = true }
+eyre.workspace = true
+crossbeam-channel.workspace = true
+tracing = "0.1.41"

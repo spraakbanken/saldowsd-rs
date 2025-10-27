@@ -1,5 +1,5 @@
+use eyre::Context;
 use hashbrown::HashMap;
-use miette::{Context, IntoDiagnostic};
 use ndarray::Array1;
 use w2v::word2vec;
 
@@ -28,7 +28,7 @@ impl VectorWSD {
             s1prior,
             context_width,
         }: VectorWSDConfig,
-    ) -> miette::Result<Self> {
+    ) -> eyre::Result<Self> {
         let id_to_vectors =
             read_embeddings_from_path(sv_file).wrap_err("Failed to read sense vectors")?;
         let form_to_ctx_vec =
@@ -45,7 +45,7 @@ impl VectorWSD {
         sv_file: &str,
         cv_file: &str,
         config: VectorWSDConfig,
-    ) -> miette::Result<crate::SharedWSDApplication> {
+    ) -> eyre::Result<crate::SharedWSDApplication> {
         Ok(Box::new(Self::new(sv_file, cv_file, config)?))
     }
 
@@ -164,9 +164,8 @@ fn normalize_to_probs(out: &mut [f32], svs: &[Option<&Array1<f32>>]) {
     }
 }
 
-fn read_embeddings_from_path(path: &str) -> miette::Result<HashMap<String, Array1<f32>>> {
+fn read_embeddings_from_path(path: &str) -> eyre::Result<HashMap<String, Array1<f32>>> {
     let embeddings = word2vec::read_w2v_file(path, false)
-        .into_diagnostic()
         .wrap_err_with(|| format!("Failed to read w2v file from '{}'", path))?;
 
     Ok(embeddings)

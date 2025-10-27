@@ -15,9 +15,9 @@ w2v = { workspace = true }
 # external deps
 hashbrown.workspace = true
 log.workspace = true
-miette.workspace = true
 thiserror.workspace = true
 ndarray.workspace = true
+eyre.workspace = true
 
 [dev-dependencies]
 eyre.workspace = true
