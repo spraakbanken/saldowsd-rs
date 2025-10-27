@@ -37,3 +37,18 @@ update-changelog: CHANGELOG.md
 .PHONY: CHANGELOG.md
 CHANGELOG.md:
 	git cliff --unreleased --prepend $@
+
+.PHONY: download-models
+download-models: download-sense-model download-context-model
+
+.PHONY: download-context-model
+download-context-model: assets/models/lem_cbow0_s512_w10_NEW2_ctx.bin
+
+assets/models/lem_cbow0_s512_w10_NEW2_ctx.bin:
+	curl -sL --output $@ https://github.com/spraakbanken/sparv-wsd/raw/refs/heads/master/models/scouse/lem_cbow0_s512_w10_NEW2_ctx.bin
+
+.PHONY: download-sense-model
+download-sense-model: assets/models/ALL_512_128_w10_A2_140403_ctx1.bin
+
+assets/models/ALL_512_128_w10_A2_140403_ctx1.bin:
+	curl -sL --output $@ https://github.com/spraakbanken/sparv-wsd/raw/refs/heads/master/models/scouse/ALL_512_128_w10_A2_140403_ctx1.bin
