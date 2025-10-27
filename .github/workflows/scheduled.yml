@@ -39,12 +39,7 @@ jobs:
 
       - name: Download models
         if: steps.cache-models.outputs.cache-hit != 'true'
-        run: |
-          SENSE_MODEL=ALL_512_128_w10_A2_140403_ctx1.bin
-          CONTEXT_MODEL=lem_cbow0_s512_w10_NEW2_ctx.bin
-
-          curl -sL --output assets/models/$SENSE_MODEL https://github.com/spraakbanken/sparv-wsd/raw/refs/heads/master/models/scouse/$SENSE_MODEL
-          curl -sL --output assets/models/$CONTEXT_MODEL https://github.com/spraakbanken/sparv-wsd/raw/refs/heads/master/models/scouse/$CONTEXT_MODEL
+        run: make download-models
       - name: ls files
         run: |
           ls -l assets/models/*
@@ -86,12 +81,7 @@ jobs:
 
       - name: Download models
         if: hashFiles('Cargo.lock') != '' && steps.cache-models.outputs.cache-hit != 'true'
-        run: |
-          SENSE_MODEL=ALL_512_128_w10_A2_140403_ctx1.bin
-          CONTEXT_MODEL=lem_cbow0_s512_w10_NEW2_ctx.bin
-
-          curl -sL --output assets/models/$SENSE_MODEL https://github.com/spraakbanken/sparv-wsd/raw/refs/heads/master/models/scouse/$SENSE_MODEL
-          curl -sL --output assets/models/$CONTEXT_MODEL https://github.com/spraakbanken/sparv-wsd/raw/refs/heads/master/models/scouse/$CONTEXT_MODEL
+        run: make download-models
       - name: ls files
         if: hashFiles('Cargo.lock') != ''
         run: |
